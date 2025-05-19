@@ -178,59 +178,74 @@ const colorsByToken = {
 	'--select-code': '--shade-9',
 }
 
+const colorsByOrder = [
+  ['white', 'black'],
+	[	'--midnight',	'--matins', '--dusk'],
+	['--deep', '--poseidon', '--thetis', '--air', '--powder', '--puff'],
+	['--burnt-out', '--burnt-jaywalk', '--jaywalk'],
+	['--blossom', '--pudding', '--summer', '--peach', '--cider'],
+	['--george', '--ulysses', '--benjamin', '--abraham', '--harriet', '--alexander']
+];
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Create color elements
+  // Create color elements in order, with breaks between groups
   const colorContainer = document.getElementById('color-container');
-  Object.keys(colorsByName).forEach((colorName) => {
-  // Find the type(s) whose value matches this colorName
-  const colorType = Object.keys(colorsByType).filter(
-    (type) => colorsByType[type] === colorName
-  );
-  // Find the token(s) whose value matches this type
-  const colorToken = Object.keys(colorsByToken)
-    .filter((token) => {
-      const value = colorsByToken[token];
-      // Direct match to a type
-      if (colorType.includes(value)) return true;
-      // color-mix or other string containing a var reference
-      if (typeof value === 'string') {
-        // Check for var(--type)
-        if (colorType.some(type => value.includes(`var(${type})`))) return true;
-        // Check for direct color name (for 'black', 'white', etc.)
-        if (colorName === 'black' || colorName === 'white') {
-          return value.includes(colorName);
-        }
-      }
-      return false;
-    })
-    .map((token) => {
-      const value = colorsByToken[token];
-      if (typeof value === 'string' && value.includes('color-mix')) {
-        return `${token}<br><small>(mix: ${value.replace('color-mix(in srgb, ', '')}</small>`;
-      }
-      return token;
+  colorsByOrder.forEach((group, groupIdx) => {
+    group.forEach((colorName) => {
+      // Find the type(s) whose value matches this colorName
+      const colorType = Object.keys(colorsByType).filter(
+        (type) => colorsByType[type] === colorName
+      );
+      // Find the token(s) whose value matches this type
+      const colorToken = Object.keys(colorsByToken)
+        .filter((token) => {
+          const value = colorsByToken[token];
+          // Direct match to a type
+          if (colorType.includes(value)) return true;
+          // color-mix or other string containing a var reference
+          if (typeof value === 'string') {
+            // Check for var(--type)
+            if (colorType.some(type => value.includes(`var(${type})`))) return true;
+            // Check for direct color name (for 'black', 'white', etc.)
+            if (colorName === 'black' || colorName === 'white') {
+              return value.includes(colorName);
+            }
+          }
+          return false;
+        })
+        .map((token) => {
+          const value = colorsByToken[token];
+          if (typeof value === 'string' && value.includes('color-mix')) {
+            return `${token}<br><small>(mix: ${value.replace('color-mix(in srgb, ', '')}</small>`;
+          }
+          return token;
+        });
+      const colorDiv = document.createElement('div');
+      colorDiv.classList.add('color');
+      colorDiv.setAttribute('data-color', colorName);
+      colorDiv.style.backgroundColor = colorsByName[colorName];
+      colorDiv.innerHTML = `
+        <h2 class="copyValue">${colorName}</h2>
+        ${colorToken.length ? 
+          `<h3>Tokens</h3>
+          <ul>
+            <li class="copyValue">${colorToken.join('</li><li class="copyValue">')}</li>
+          </ul>` : ''}
+        ${colorType.length ? 
+          `<h3>Types</h3>
+          <ul>
+            <li class="copyValue">${colorType.join('</li><li class="copyValue">')}</li>
+          </ul>` : ''}`;
+      colorContainer.appendChild(colorDiv);
     });
-    console.log(colorToken);
-    const colorDiv = document.createElement('div');
-    colorDiv.classList.add('color');
-    colorDiv.setAttribute('data-color', colorName);
-    colorDiv.style.backgroundColor = colorsByName[colorName];
-    colorDiv.innerHTML = `
-    <h2 class="copyValue">${colorName}</h2>
-    ${colorToken.length ? 
-      `<h3>Tokens</h3>
-      <ul>
-        <li class="copyValue">${colorToken.join('</li><li class="copyValue">')}</li>
-      </ul>` : ''}
-    
-      
-    ${colorType.length ? 
-      `<h3>Types</h3>
-      <ul>
-        <li class="copyValue">${colorType.join('</li><li class="copyValue">')}</li>
-      </ul>` : ''}`;
-    colorContainer.appendChild(colorDiv);
+    // Add a break between groups, except after the last group
+    if (groupIdx < colorsByOrder.length - 1) {
+      const groupBreak = document.createElement('hr');
+      /* groupBreak.style.gridColumn = '1 / -1';
+      groupBreak.style.height = '24px'; */
+      colorContainer.appendChild(groupBreak);
+    }
   });
 
   const colorElements = document.querySelectorAll('.color');
