@@ -82,6 +82,54 @@ const colorsByType = {
 	'--red-4': '#c5151d'
 }
 
+const colorsByTypeDarkMode = {
+		'--shade-1': '--midnight',
+		'--shade-2': '--matins',
+		'--shade-3': '--dusk',
+		'--shade-4': '--ansel',
+		'--shade-5': '--platon',
+		'--shade-6': '--casablanca',
+		'--shade-7': '--hitchcock',
+		'--shade-8': '--hitchcock',
+		'--shade-9': '--brady',
+		'--shade-10': '--mapplethorpe',
+		'--shade-11': 'white',
+		'--accent-1': '--midnight',
+		'--accent-2': 'color-mix(in srgb, var(--poseidon) 15%, var(--matins))',
+		'--accent-3': 'color-mix(in srgb, var(--poseidon) 40%, var(--matins))',
+		'--accent-4': 'color-mix(in srgb, var(--poseidon) 60%, var(--matins))',
+		'--accent-5': 'color-mix(in srgb, var(--poseidon) 80%, var(--matins))',
+		'--accent-6': '--poseidon',
+		'--accent-7': '--thetis',
+		'--nav-1': '--midnight',
+		'--nav-2': '--george',
+		'--nav-3': '--ulysses',
+		'--nav-4': '--benjamin',
+		'--nav-5': '--abraham',
+		'--nav-6': '--harriet',
+		'--alert-1': '--burnt-out',
+		'--alert-2': '--burnt-jaywalk',
+		'--alert-3': '--jaywalk',
+		'--alert-4': '#e96f1b',
+		'--alert-5': '--blossom',
+		'--alert-6': '--pudding',
+		'--alert-7': '#ffd76f',
+		'--alert-8': '--summer',
+		'--alert-9': 'white',
+		'--green-1': '--ulysses',
+		'--green-2': '--benjamin',
+		'--green-3': '#c0e483',
+		'--green-4': '--abraham',
+		'--green-5': '--harriet',
+		'--green-6': '--alexander',
+		'--yellow-1': '--pudding',
+		'--yellow-2': '--peach',
+		'--red-1': '#c5151d',
+		'--red-2': '#ffa9af',
+		'--red-3': '#f9c5c9',
+		'--red-4': '#f9d7d9'
+}
+
 const colorsByToken = {
 	'--bg-primary': '--shade-1',
 	'--bg-selected': 'color-mix(in srgb, var(--shade-4) 65%, transparent)',
@@ -178,6 +226,39 @@ const colorsByToken = {
 	'--select-code': '--shade-9',
 }
 
+const colorsByTokenDarkModeOverrides = {
+	'--border-primary': '--ansel',
+	'--border-subtle': '--matins',
+	'--text-link': '--thetis',
+	'--bg-selected-alt': '--blossom',
+	'--text-selected-alt': '--midnight',
+	'--bg-priority-medium': '--yellow-1',
+	'--bg-priority-high': '--red-2',
+	'--bg-code': '--shade-2',
+	'--bg-switch-off': '--shade-4',
+	'--text-code': '--accent-7',
+	'--select-code': '--shade-3',
+	'--bg-overlay': 'color-mix(in srgb, var(--shade-3) 90%, transparent)',
+	'--bg-overlay-subtle': 'color-mix(in srgb, var(--shade-3) 50%, transparent)',
+	'--border-selected-nav-intense': '--benjamin',
+	'--icon-subtle': '--casablanca',
+	'--border-input': '--ansel',
+	'--bg-input': '#1d3944',
+	'--text-helptext': '--casablanca',
+	'--text-subtle': '--casablanca',
+	'--bg-error': '#8e0006',
+	'--icon-error': '#ffabb0',
+	'--border-error': '#ffabb0',
+	'--bg-disabled': '--shade-2',
+	'--bg-disabled-button': '--shade-4',
+	'--text-disabled': '--shade-5',
+	'--text-disabled-button': '--shade-2',
+	'--icon-disabled': '--shade-5',
+	'--border-disabled': '--shade-3'
+}
+
+const colorsByTokenDarkMode = {...colorsByToken, ...colorsByTokenDarkModeOverrides}
+
 const colorsByOrder = [
   ['white', 'black'],
 	[	'--midnight',	'--matins', '--dusk'],
@@ -189,95 +270,105 @@ const colorsByOrder = [
 ];
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
+	let colorElements;
+
+  const colorContainer = document.getElementById('color-container');
+	const searchInput = document.getElementById('search');
 
   // Create color elements in order, with breaks between groups
-  const colorContainer = document.getElementById('color-container');
-  colorsByOrder.forEach((group, groupIdx) => {
-    group.forEach((colorName) => {
-      // Find the type(s) whose value matches this colorName
-      const colorType = Object.keys(colorsByType).filter(
-        (type) => colorsByType[type] === colorName
-      );
-      // Find the token(s) whose value matches this type
-      const colorToken = Object.keys(colorsByToken)
-        .filter((token) => {
-          const value = colorsByToken[token];
-          // Direct match to a type
-          if (colorType.includes(value)) return true;
-          // color-mix or other string containing a var reference
-          if (typeof value === 'string') {
-            // Check for var(--type)
-            if (colorType.some(type => value.includes(`var(${type})`))) return true;
-            // Check for direct color name (for 'black', 'white', etc.)
-            if (colorName === 'black' || colorName === 'white') {
-              return value.includes(colorName);
-            }
-          }
-          return false;
-        })
-        .map((token) => {
-          const value = colorsByToken[token];
-          if (typeof value === 'string' && value.includes('color-mix')) {
-            return `${token}<br><small>(mix: ${value.replace('color-mix(in srgb, ', '')}</small>`;
-          }
-          return token;
-        });
-      const colorDiv = document.createElement('div');
-      colorDiv.classList.add('color');
-      colorDiv.setAttribute('data-color', colorName);
-      colorDiv.style.backgroundColor = colorsByName[colorName];
-      colorDiv.innerHTML = `
-        <h2 class="copyValue">${colorName}</h2>
-        ${colorToken.length ? 
-          `<h3>Tokens</h3>
-          <ul>
-            <li class="copyValue">${colorToken.join('</li><li class="copyValue">')}</li>
-          </ul>` : ''}
-        ${colorType.length ? 
-          `<h3>Types</h3>
-          <ul>
-            <li class="copyValue">${colorType.join('</li><li class="copyValue">')}</li>
-          </ul>` : ''}`;
-      colorContainer.appendChild(colorDiv);
-    });
-    // Add a break between groups, except after the last group
-    if (groupIdx < colorsByOrder.length - 1) {
-      const groupBreak = document.createElement('hr');
-      /* groupBreak.style.gridColumn = '1 / -1';
-      groupBreak.style.height = '24px'; */
-      colorContainer.appendChild(groupBreak);
-    }
-  });
+	const initColors = () => {
+		const storedDarkMode = localStorage.getItem('dark-mode');
+		colorContainer.innerHTML = ''; // Clear previous colors
+		searchInput.value = ''; // Clear search input
+		let useColorsByType = colorsByType;
+		let useColorsByToken = colorsByToken;
+		if (storedDarkMode === 'dark') {
+			useColorsByType = colorsByTypeDarkMode;
+			useColorsByToken = colorsByTokenDarkMode;
+		}
+		colorsByOrder.forEach((group, groupIdx) => {
+			group.forEach((colorName) => {
+				// Find the type(s) whose value matches this colorName
+				const colorType = Object.keys(useColorsByType).filter(
+					(type) => {
+						//useColorsByType[type] === colorName
+						const value = useColorsByType[type];
+						// Direct match to a color name
+						if (colorName === value) return true;
+						// color-mix or other string containing a var reference
+						if (typeof value === 'string') {
+							// Check for var(--name)
+							if (value.includes(`var(${colorName})`)) return true;
+							// Check for direct color name (for 'black', 'white', etc.)
+							if (colorName === 'black' || colorName === 'white') {
+								return value.includes(colorName);
+							}
+						}
+					}
+				).map((type) => {
+					const value = useColorsByType[type];
+					if (typeof value === 'string' && value.includes('color-mix')) {
+						return `${type}<br><small>(mix: ${value.replace('color-mix(in srgb, ', '')}</small>`;
+					}
+					return type;
+				});
+				// Find the token(s) whose value matches this type
+				const colorToken = Object.keys(useColorsByToken)
+					.filter((token) => {
+						const value = useColorsByToken[token];
+						// Direct match to a type
+						if (colorType.includes(value)) return true;
+						// color-mix or other string containing a var reference
+						if (typeof value === 'string') {
+							// Check for var(--type)
+							if (colorType.some(type => value.includes(`var(${type})`))) return true;
+							// Check for direct color name (for 'black', 'white', etc.)
+							if (colorName === 'black' || colorName === 'white') {
+								return value.includes(colorName);
+							}
+						}
+						return false;
+					})
+					.map((token) => {
+						const value = useColorsByToken[token];
+						if (typeof value === 'string' && value.includes('color-mix')) {
+							return `${token}<br><small>(mix: ${value.replace('color-mix(in srgb, ', '')}</small>`;
+						}
+						return token;
+					});
+				const colorDiv = document.createElement('div');
+				colorDiv.classList.add('color');
+				colorDiv.setAttribute('data-color', colorName);
+				colorDiv.style.backgroundColor = colorsByName[colorName];
+				colorDiv.innerHTML = `
+					<h2 class="copyValue">${colorName}</h2>
+					${colorToken.length ? 
+						`<div>
+						<h3>Tokens</h3>
+						<ul>
+							<li class="copyValue">${colorToken.join('</li><li class="copyValue">')}</li>
+						</ul>` : ''}
+					${colorType.length ? 
+						`<h3>Types</h3>
+						<ul>
+							<li class="copyValue">${colorType.join('</li><li class="copyValue">')}</li>
+						</ul>` : ''}
+						</div>`;
+				colorContainer.appendChild(colorDiv);
+			});
+			// Add a break between groups, except after the last group
+			if (groupIdx < colorsByOrder.length - 1) {
+				const groupBreak = document.createElement('hr');
+				/* groupBreak.style.gridColumn = '1 / -1';
+				groupBreak.style.height = '24px'; */
+				colorContainer.appendChild(groupBreak);
+			}
+		});
+	colorElements = document.querySelectorAll('.color');
+	}
 
-  const colorElements = document.querySelectorAll('.color');
-  const tokenElements = document.querySelectorAll('.token');
-
-  colorElements.forEach((element) => {
-    const colorName = element.getAttribute('data-color');
-    if (colorsByName[colorName]) {
-      element.style.backgroundColor = colorsByName[colorName];
-    }
-  });
-
-  tokenElements.forEach((element) => {
-    const tokenName = element.getAttribute('data-token');
-    if (colorsByToken[tokenName]) {
-      element.style.backgroundColor = colorsByToken[tokenName];
-    }
-  });
+	initColors();
 
   // Copy value to clipboard
   const copyValueElements = document.querySelectorAll('.copyValue');
@@ -307,7 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-	document.getElementById('search').addEventListener('input', function() {
+	// Search functionality
+	searchInput.addEventListener('input', function() {
 			const searchTerm = this.value.toLowerCase();
 			colorElements.forEach((colorElement) => {
 					const colorName = colorElement.getAttribute('data-color').toLowerCase();
@@ -342,12 +434,51 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 	});
 
-	document.getElementById('background-color-toggle').addEventListener('click', function() {
+	// Background Toggle Local Storage
+	const storedBackground = localStorage.getItem('background');
+	const backgroundColorToggle = document.getElementById('background-color-toggle');
+	backgroundColorToggle.addEventListener('click', function() {
 		const body = document.body;
 		if (body.classList.contains('dark-bg')) {
 			body.classList.remove('dark-bg');
+			localStorage.setItem('background', 'light');
 		} else {
 			body.classList.add('dark-bg');
+			localStorage.setItem('background', 'dark');
 		}
 	});
+	backgroundColorToggle.checked = storedBackground === 'dark';
+	if (storedBackground === 'dark') {
+		document.body.classList.add('dark-bg');
+	} else {
+		document.body.classList.remove('dark-bg');
+	}
+
+	// Darkmode Color Toggle Local Storage
+	const darkModeToggle = document.getElementById('dark-mode-color-toggle');
+	const storedDarkMode = localStorage.getItem('dark-mode');
+	darkModeToggle.addEventListener('click', function() {
+		const body = document.body;
+		if (body.classList.contains('dark-mode')) {
+			body.classList.remove('dark-mode');
+			localStorage.setItem('dark-mode', 'light');
+		} else {
+			body.classList.add('dark-mode');
+			localStorage.setItem('dark-mode', 'dark');
+		}
+		initColors();
+	});
+	darkModeToggle.checked = storedDarkMode === 'dark';
+	if (storedDarkMode === 'dark') {
+		document.body.classList.add('dark-mode');
+	} else {
+		document.body.classList.remove('dark-mode');
+	}
+
+	// Set the initial dark mode color based on the toggle state
+	if (darkModeToggle.checked) {
+		document.body.classList.add('dark-mode');
+	} else {
+		document.body.classList.remove('dark-mode');
+	}
 });

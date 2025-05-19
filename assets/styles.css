@@ -63,14 +63,27 @@ input {
 }
 main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 300px);
+  grid-template-columns: repeat(auto-fit, 250px);
   justify-content: center;
   gap: 16px;
   margin: 16px;
 }
 .color {
-  height: 300px;
+  height: 350px;
   padding: 8px;
+  > div {
+    overflow: overlay;
+    max-height: calc(100% - 26px);
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: rgba(var(--bg), 0.25);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(var(--fg), 0.25);
+      border-radius: 4px;
+    }
+  }
 }
 .copyValue {
   cursor: copy;
