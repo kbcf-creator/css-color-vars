@@ -181,11 +181,25 @@ const colorsByToken = {
 const colorsByOrder = [
   ['white', 'black'],
 	[	'--midnight',	'--matins', '--dusk'],
+	['--ansel', '--platon', '--casablanca', '--hitchcock', '--lange', '--brady', '--mapplethorpe', '--arnold'],
 	['--deep', '--poseidon', '--thetis', '--air', '--powder', '--puff'],
 	['--burnt-out', '--burnt-jaywalk', '--jaywalk'],
 	['--blossom', '--pudding', '--summer', '--peach', '--cider'],
 	['--george', '--ulysses', '--benjamin', '--abraham', '--harriet', '--alexander']
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
 
