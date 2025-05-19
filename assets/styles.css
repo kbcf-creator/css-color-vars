@@ -12,9 +12,6 @@ h1 {
 }
 h2, h3, p, ul {
   margin: 0 0 4px 0;
-  filter: invert(1);
-  mix-blend-mode: difference;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5), 0 0 2px rgba(255, 255, 255, .5);
 }
 h2 {
   font-size: 1.125rem;
@@ -81,3 +78,37 @@ main {
     transform: translate(-50%, 0);
   }
 }
+
+[data-color='--burnt-out'] { color: white; }
+[data-color='--burnt-jaywalk'] { color: white; }
+[data-color='--jaywalk'] { color: white; }
+[data-color='--blossom'] { color: black; }
+[data-color='--pudding'] { color: black; }
+[data-color='--summer'] { color: black; }
+[data-color='--peach'] { color: black; }
+[data-color='--cider'] { color: black; }
+[data-color='--midnight'] { color: white; }
+[data-color='--matins'] { color: white; }
+[data-color='--dusk'] { color: white; }
+[data-color='--deep'] { color: white; }
+[data-color='--poseidon'] { color: white; }
+[data-color='--thetis'] { color: black; }
+[data-color='--air'] { color: black; }
+[data-color='--powder'] { color: black; }
+[data-color='--puff'] { color: black; }
+[data-color='--george'] { color: white; }
+[data-color='--ulysses'] { color: white; }
+[data-color='--benjamin'] { color: black; }
+[data-color='--abraham'] { color: black; }
+[data-color='--harriet'] { color: black; }
+[data-color='--alexander'] { color: black; }
+[data-color='--ansel'] { color: white; }
+[data-color='--platon'] { color: white; }
+[data-color='--casablanca'] { color: black; }
+[data-color='--hitchcock'] { color: black; }
+[data-color='--lange'] { color: black; }
+[data-color='--brady'] { color: black; }
+[data-color='--mapplethorpe'] { color: black; }
+[data-color='--arnold'] { color: black; }
+[data-color='black'] { color: white; }
+[data-color='white'] { color: black; }
