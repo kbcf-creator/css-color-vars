@@ -307,31 +307,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-document.getElementById('search').addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase();
-    colorElements.forEach((colorElement) => {
-        const colorName = colorElement.getAttribute('data-color').toLowerCase();
-        if (colorName.includes(searchTerm)) {
-            colorElement.style.display = '';
-        } else {
-            colorElement.style.display = 'none';
-        }
-    });
+	document.getElementById('search').addEventListener('input', function() {
+			const searchTerm = this.value.toLowerCase();
+			colorElements.forEach((colorElement) => {
+					const colorName = colorElement.getAttribute('data-color').toLowerCase();
+					// Get tokens and types text from inside the color element
+					const tokensText = Array.from(colorElement.querySelectorAll('ul li'))
+							.map(li => li.textContent.toLowerCase())
+							.join(' ');
+					// Match if search term is in color name, tokens, or types
+					if (
+							colorName.includes(searchTerm) ||
+							tokensText.includes(searchTerm)
+					) {
+							colorElement.style.display = '';
+					} else {
+							colorElement.style.display = 'none';
+					}
+			});
 
-  // Hide <hr>s that have no visible .color after them
-  const container = document.getElementById('color-container');
-  const children = Array.from(container.children);
-  let foundVisible = false;
-  // Traverse backwards to hide <hr> if no visible .color after it
-  for (let i = children.length - 1; i >= 0; i--) {
-    const el = children[i];
-    if (el.classList && el.classList.contains('color') && el.style.display !== 'none') {
-      foundVisible = true;
-    }
-    if (el.tagName === 'HR') {
-      el.style.display = foundVisible ? '' : 'none';
-      foundVisible = false;
-    }
-  }
-});
+			// Hide <hr>s that have no visible .color after them
+			const container = document.getElementById('color-container');
+			const children = Array.from(container.children);
+			let foundVisible = false;
+			for (let i = children.length - 1; i >= 0; i--) {
+					const el = children[i];
+					if (el.classList && el.classList.contains('color') && el.style.display !== 'none') {
+							foundVisible = true;
+					}
+					if (el.tagName === 'HR') {
+							el.style.display = foundVisible ? '' : 'none';
+							foundVisible = false;
+					}
+			}
+	});
+
+	document.getElementById('background-color-toggle').addEventListener('click', function() {
+		const body = document.body;
+		if (body.classList.contains('dark-bg')) {
+			body.classList.remove('dark-bg');
+		} else {
+			body.classList.add('dark-bg');
+		}
+	});
 });
