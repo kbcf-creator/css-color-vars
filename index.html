@@ -8,32 +8,44 @@
 </head>
 <body>
   <header>
-    <h1>CSS Color Variables</h1>
-    <div>
-      <input type="search" id="search" placeholder="Search colors...">
-      <div class="switch-container">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" clip-path="url(#a)"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
-        <label class="switch">
-          <input type="checkbox" id="background-color-toggle">
-          <span class="slider round"></span>
-        </label>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
-        <small>Background</small>
+    <div class="container">
+      <h1>CSS Color Variables</h1>
+      <div class="utilities">
+        <input type="search" id="search" placeholder="Search colors...">
+        <div class="switch-container">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" clip-path="url(#a)"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+          <label class="switch">
+            <input type="checkbox" id="background-color-toggle">
+            <span class="slider round"></span>
+          </label>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+          <small>Background</small>
+        </div>
+        <div class="switch-container">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" clip-path="url(#a)"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+          <label class="switch">
+            <input type="checkbox" id="dark-mode-color-toggle">
+            <span class="slider round"></span>
+          </label>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+          <small>Dark Colors</small>
+        </div>
       </div>
-      <div class="switch-container">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" clip-path="url(#a)"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
-        <label class="switch">
-          <input type="checkbox" id="dark-mode-color-toggle">
-          <span class="slider round"></span>
-        </label>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
-        <small>Dark Colors</small>
-      </div>
-    </div>
     </div>
   </header>
   <main id="color-container">
   </main>
+  <footer>
+    <div class="container">
+      <h4>Info</h4>
+      <ul>
+      <li>Each swatch shows how our brand colors map to design tokens and their generic types (i.e. shade, alert, etc).</li>
+      <li>Design tokens should be used if at all possible and the generic types should be used only if a design token doesn't make sense in context.</li>
+      <li>All tokens and types map to tailwind classes (i.e. <code>var(--bg-disabled)</code> => <code>.bg-disable</code>, <code>var(--text-primary)</code> => <code>.text-primary</code>, etc.)</li>
+      <li>The background toggle switches the background color of the page. The dark color toggle shows the different mappings of our dark mode.</li>
+      </ul>
+    </div>
+  </footer>
   <script src="assets/scripts.js"></script>
 </body>
 </html>
